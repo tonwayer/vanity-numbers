@@ -1,0 +1,49 @@
+# Python specific
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+*.python-version
+
+# Distribution / packaging
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.pytest_cache/
+
+# Unit test / coverage reports
+.coverage
+.tox/
+.nox/
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+*.pytest_cache/
+*.mocha
+
+# AWS SAM build artifacts
+.aws-sam/
+
+# SAM generated files
+samconfig.toml
+
+# macOS specific
+.DS_Store
+
+# Other IDE specific files
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Temporary files
+*.swp
+*~
+.cache/
