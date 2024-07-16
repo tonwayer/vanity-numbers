@@ -6,12 +6,31 @@ from botocore.exceptions import ClientError
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('VanityNumbers')
 
-# Function to generate vanity numbers
+# Function to map digits to letters for vanity numbers
+digit_to_letters = {
+    '2': 'ABC', '3': 'DEF', '4': 'GHI', '5': 'JKL', '6': 'MNO',
+    '7': 'PQRS', '8': 'TUV', '9': 'WXYZ'
+}
+
 def generate_vanity_numbers(phone_number):
-    # Placeholder function for converting phone number to vanity numbers
-    # Implement your logic here
-    vanity_numbers = ["CALLME", "FUN123", "HELLO9", "FOOD45", "SHOP67"]
-    return vanity_numbers
+    def backtrack(index, path):
+        if index == len(phone_number):
+            result.append(''.join(path))
+            return
+        digit = phone_number[index]
+        if digit in digit_to_letters:
+            for letter in digit_to_letters[digit]:
+                path.append(letter)
+                backtrack(index + 1, path)
+                path.pop()
+        else:
+            path.append(digit)
+            backtrack(index + 1, path)
+            path.pop()
+
+    result = []
+    backtrack(0, [])
+    return result
 
 def lambda_handler(event, context):
     try:
@@ -21,14 +40,16 @@ def lambda_handler(event, context):
         # Generate vanity numbers
         vanity_numbers = generate_vanity_numbers(phone_number)
         
-        # Choose the top 5 vanity numbers based on custom criteria
+        # Choose the top 5 vanity numbers
         best_vanity_numbers = vanity_numbers[:5]
         
         # Save to DynamoDB
         table.put_item(
             Item={
                 'PhoneNumber': phone_number,
-                'VanityNumbers': best_vanity_numbers
+                'VanityNumber1': vanity_numbers[0],
+                'VanityNumber2': vanity_numbers[1],
+                'VanityNumber3': vanity_numbers[2]
             }
         )
         
